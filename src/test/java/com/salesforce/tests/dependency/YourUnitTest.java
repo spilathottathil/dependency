@@ -1,6 +1,5 @@
 package com.salesforce.tests.dependency;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,15 +11,37 @@ import org.junit.Test;
 
 public class YourUnitTest extends BaseTest {
 
-    Component component;
+    RequestHandler requestHandler;
 
 @Before
 public void setUp(){
-   component= new Component();
+   requestHandler = new RequestHandler();
 
 }
 
+@Test
+//Removing component should remove its dependencies as well.
+public void removeComponentWithDependencies(){
+    String[] input = {"DEPEND TELNET TCPIP NETCARD\n" +
+            "INSTALL TELNET\n",
+            "REMOVE TELNET\n",
+            "LIST\n",
+            "END\n"
+    };
 
+    String expectedOutput = "DEPEND TELNET TCPIP NETCARD\n" +
+            "INSTALL TELNET\n" +
+            "Installing TCPIP\n" +
+            "Installing NETCARD\n" +
+            "Installing TELNET\n" +
+            "REMOVE TELNET\n" +
+            "Removing TELNET\n" +
+            "Removing TCPIP\n"+
+            "Removing NETCARD\n"+
+            "LIST\n"+
+            "END\n";
+    runTest(expectedOutput, input);
+}
 
 @Test
 public void removeRequiredComponent(){
@@ -78,6 +99,7 @@ public void removeNotInstalledComponent(){
             "END\n";
     runTest(expectedOutput, input);
 }
+
 
 
 }

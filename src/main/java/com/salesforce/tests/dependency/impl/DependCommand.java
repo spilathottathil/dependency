@@ -1,8 +1,8 @@
 package com.salesforce.tests.dependency.impl;
 
 import com.salesforce.tests.dependency.Command;
-import com.salesforce.tests.dependency.Component;
-import com.salesforce.tests.dependency.util.DependentUtil;
+import com.salesforce.tests.dependency.RequestHandler;
+import com.salesforce.tests.dependency.util.DependencyUtil;
 
 import java.util.*;
 
@@ -11,12 +11,12 @@ import java.util.*;
  */
 public class DependCommand implements Command {
 
-    private  Map<String, List<String>> componentDependencyMap =Component.componentDependencies;
-    private  Map<String,Set<String>> dependencies = Component.availableDependencies;
+    private  Map<String, List<String>> componentDependencyMap = RequestHandler.componentDependencies;
+    private  Map<String,Set<String>> dependencies = RequestHandler.availableDependencies;
 
     @Override
     public void execute(String inputCommand){
-        String[] inputCommands = DependentUtil.parseInputCommand(inputCommand);
+        String[] inputCommands = DependencyUtil.parseInputCommand(inputCommand);
         addDependencies(inputCommands[1],Arrays.copyOfRange(inputCommands,2,inputCommands.length));
     }
 

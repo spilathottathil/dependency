@@ -8,17 +8,9 @@ import java.util.*;
 public class Main {
 
 
-
-    public void manageCommands(){
-
-
-    }
-
-
-
     public static void main(String[] args) {
 
-        Component component = new Component();
+        RequestHandler requestHandler = new RequestHandler();
 
         //read input from stdin
         Scanner scan = new Scanner(System.in);
@@ -39,10 +31,10 @@ public class Main {
             }
            //Please provide your implementation here
             System.out.println(line);
-            component.handleCommands(line);
+            requestHandler.handleCommands(line);
 
         }
-        component.destroy();
+        requestHandler.destroy();
 
     }
 

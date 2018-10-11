@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Created by spilathottathil on 10/10/18.
  */
-public   class DependentUtil {
+public class DependencyUtil {
     public static String DEPEND = "DEPEND";
     public static String INSTALL = "INSTALL";
     public static String REMOVE = "REMOVE";

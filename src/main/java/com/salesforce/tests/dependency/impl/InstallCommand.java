@@ -1,8 +1,8 @@
 package com.salesforce.tests.dependency.impl;
 
 import com.salesforce.tests.dependency.Command;
-import com.salesforce.tests.dependency.Component;
-import com.salesforce.tests.dependency.util.DependentUtil;
+import com.salesforce.tests.dependency.RequestHandler;
+import com.salesforce.tests.dependency.util.DependencyUtil;
 
 import java.util.*;
 
@@ -10,13 +10,12 @@ import java.util.*;
  * Created by spilathottathil on 10/10/18.
  */
 public class InstallCommand implements Command {
-    private  Map<String, List<String>> componentDependencyMap = Component.componentDependencies;
-    private  List<String> components = Component.installedComponents;
+    private  Map<String, List<String>> componentDependencyMap = RequestHandler.componentDependencies;
+    private  List<String> components = RequestHandler.installedComponents;
 
     @Override
     public void execute(String inputComponent){
-
-        installComponent(DependentUtil.parseInputCommand(inputComponent)[1]);
+        installComponent(DependencyUtil.parseInputCommand(inputComponent)[1]);
     }
 
     void installComponent(String component) {

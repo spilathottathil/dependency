@@ -1,8 +1,8 @@
 package com.salesforce.tests.dependency.impl;
 
 import com.salesforce.tests.dependency.Command;
-import com.salesforce.tests.dependency.Component;
-import com.salesforce.tests.dependency.util.DependentUtil;
+import com.salesforce.tests.dependency.RequestHandler;
+import com.salesforce.tests.dependency.util.DependencyUtil;
 
 import java.util.*;
 
@@ -10,14 +10,14 @@ import java.util.*;
  * Created by spilathottathil on 10/10/18.
  */
 public class RemoveCommand  implements Command {
-    private  List components = Component.installedComponents;
-    private  Map<String, List<String>> componentDependencyMap =Component.componentDependencies;
-    private  Map<String,Set<String>> dependencies = Component.availableDependencies;
+    private  List components = RequestHandler.installedComponents;
+    private  Map<String, List<String>> componentDependencyMap = RequestHandler.componentDependencies;
+    private  Map<String,Set<String>> dependencies = RequestHandler.availableDependencies;
 
     @Override
     public void execute(String removeComponent){
 
-        removeComponent(DependentUtil.parseInputCommand(removeComponent)[1]);
+        removeComponent(DependencyUtil.parseInputCommand(removeComponent)[1]);
 
     }
     void removeComponent(String component) {
