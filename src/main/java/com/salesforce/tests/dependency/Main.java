@@ -7,6 +7,8 @@ import java.util.*;
  */
 public class Main {
 
+
+
     public void manageCommands(){
 
 
@@ -17,6 +19,7 @@ public class Main {
     public static void main(String[] args) {
 
         Component component = new Component();
+        component.setCommands();
         //read input from stdin
         Scanner scan = new Scanner(System.in);
 
@@ -34,39 +37,12 @@ public class Main {
                 System.out.println("END");
                 break;
             }
-
-
-
-            //Please provide your implementation here
+           //Please provide your implementation here
             System.out.println(line);
-
-            String[] command = parseInputCommand(line);
-
-            switch (command[0]){
-
-                case "DEPEND":
-                    component.addDependencies(command[1], Arrays.copyOfRange(command,2,command.length));
-                    break;
-                case "INSTALL":
-                    component.installComponent(command[1]);
-                    break;
-                case "REMOVE":
-                    component.removeComponent(command[1]);
-                    break;
-                case "LIST":
-                    component.listComponent();
-                    break;
-            }
-
-
+            component.handleCommands(line);
         }
 
     }
 
-    public static String[] parseInputCommand(String input){
-        return  Arrays.stream(input.split(" "))
-                .map(String::trim)
-                .toArray(String[]::new);
-    }
 
 }

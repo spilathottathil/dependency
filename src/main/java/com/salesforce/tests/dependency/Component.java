@@ -1,78 +1,29 @@
 package com.salesforce.tests.dependency;
 
+import com.salesforce.tests.dependency.impl.DependCommand;
+import com.salesforce.tests.dependency.impl.InstallCommand;
+import com.salesforce.tests.dependency.impl.ListCommand;
+import com.salesforce.tests.dependency.impl.RemoveCommand;
+import com.salesforce.tests.dependency.util.DependentUtil;
+
 import java.util.*;
 
 
 class Component {
 
-    private Map<String, List<String>> componentDependencyMap = new HashMap<>();
-    private List<String> installedComponents = new ArrayList<>();
-    private Map<String,Set<String>> installedDependencies = new HashMap<>();
+    private static Map<String,Command> commandMap = new HashMap<>();
 
+    public void handleCommands(String inputLine){
 
-    void  addDependencies(String component, String[] dependentComponents) {
-
-        List<String> dependenciesForComponent = Optional.ofNullable(componentDependencyMap.get(component)).orElse(new ArrayList<>());
-
-        for (String dependentComponent : dependentComponents) {
-            if(componentDependencyMap.get(dependentComponent) != null &&   componentDependencyMap.get(dependentComponent).contains(component)){
-                System.out.println(dependentComponent + " depends on "+component+", ignoring command");
-                continue;
-            }
-            dependenciesForComponent.add(dependentComponent);
-            componentDependencyMap.put(component,dependenciesForComponent);
-            Set<String> components = Optional.ofNullable(installedDependencies.get(dependentComponent)).orElse(new HashSet<>());
-            components.add(component);
-            installedDependencies.put(dependentComponent,components);
-        }
-
+        String[] command = DependentUtil.parseInputCommand(inputLine);
+        commandMap.get(command[0]).execute(inputLine);
     }
 
-    void installComponent(String component) {
-        //check if its already installed
-        if(installedComponents.contains(component)){
-            System.out.println(component+ " is already installed");
-        }else {
-            List<String> dependenciesForComponent = Optional.ofNullable(componentDependencyMap.get(component)).orElse(new ArrayList<>());
-            for ( String dependency : dependenciesForComponent){
-                if(!installedComponents.contains(dependency)){
-                    System.out.println("Installing "+dependency);
-                    installedComponents.add(dependency);
-                }
-            }
-            System.out.println("Installing "+component);
-            installedComponents.add(component);
-        }
-
-    }
-
-    void removeComponent(String component) {
-        if(!installedComponents.contains(component)){
-            System.out.println(component+" is not installed");
-            return;
-        }
-        if(installedDependencies.get(component) != null ){
-            System.out.println(component+" is still needed");
-        }else{
-            installedComponents.remove(component);
-            System.out.println("Removing "+component);
-            List<String> dependenciesForComponent = Optional.ofNullable(componentDependencyMap.get(component)).orElse(new ArrayList<>());
-            for (String dependency : dependenciesForComponent){
-                removeIndividualComponent(dependency,component);
-            }
-        }
-    }
-
-    void removeIndividualComponent(String dependency,String component) {
-        if(installedDependencies.get(dependency) != null ) installedDependencies.get(dependency).remove(component);
-        if(installedDependencies.get(dependency).isEmpty()) {
-            installedComponents.remove(dependency);
-            System.out.println("Removing "+dependency);
-        }
-    }
-
-    void listComponent() {
-        installedComponents.forEach(System.out :: println);
+    public  void setCommands(){
+        commandMap.put(DependentUtil.DEPEND , new DependCommand());
+        commandMap.put(DependentUtil.INSTALL,new InstallCommand());
+        commandMap.put(DependentUtil.LIST,new ListCommand());
+        commandMap.put(DependentUtil.REMOVE,new RemoveCommand());
     }
 
 }
