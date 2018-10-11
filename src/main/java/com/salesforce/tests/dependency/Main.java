@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
 
         Component component = new Component();
-        component.setCommands();
+
         //read input from stdin
         Scanner scan = new Scanner(System.in);
 
@@ -40,7 +40,9 @@ public class Main {
            //Please provide your implementation here
             System.out.println(line);
             component.handleCommands(line);
+
         }
+        component.destroy();
 
     }
 

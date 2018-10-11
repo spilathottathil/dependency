@@ -1,6 +1,7 @@
 package com.salesforce.tests.dependency.impl;
 
 import com.salesforce.tests.dependency.Command;
+import com.salesforce.tests.dependency.Component;
 import com.salesforce.tests.dependency.util.DependentUtil;
 
 import java.util.*;
@@ -10,7 +11,10 @@ import java.util.*;
  */
 public class DependCommand implements Command {
 
+    private  Map<String, List<String>> componentDependencyMap =Component.componentDependencies;
+    private  Map<String,Set<String>> dependencies = Component.availableDependencies;
 
+    @Override
     public void execute(String inputCommand){
         String[] inputCommands = DependentUtil.parseInputCommand(inputCommand);
         addDependencies(inputCommands[1],Arrays.copyOfRange(inputCommands,2,inputCommands.length));
@@ -27,9 +31,9 @@ public class DependCommand implements Command {
             }
             dependenciesForComponent.add(dependentComponent);
             componentDependencyMap.put(component,dependenciesForComponent);
-            Set<String> components = Optional.ofNullable(installedDependencies.get(dependentComponent)).orElse(new HashSet<>());
+            Set<String> components = Optional.ofNullable(dependencies.get(dependentComponent)).orElse(new HashSet<>());
             components.add(component);
-            installedDependencies.put(dependentComponent,components);
+            dependencies.put(dependentComponent,components);
         }
 
     }
